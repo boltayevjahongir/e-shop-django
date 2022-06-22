@@ -117,14 +117,34 @@
 							</div>
 						</div>
 						{% endfor %}
-
-						<ul class="pagination">
-							<li class="active"><a href="">1</a></li>
-							<li><a href="">2</a></li>
-							<li><a href="">3</a></li>
-							<li><a href="">&raquo;</a></li>
-						</ul>
 					</div><!--features_items-->
+					<div class="row">
+							<div class="col-12">
+								{% if products.has_other_pages %}
+								<ul class="pagination">
+							   {% if products.has_previous %}
+									<li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a></li>
+								{% else %}
+									<li class="page-item disabled"><span class="page-link">Previous</span></li>
+								  {% endif %}
+								{% for i in products.paginator.page_range %}
+									{% if products.number == i %}
+									<li class="page-item active" aria-current="page"><a class="page-link" href="#">{{ i }}</a></li>
+									{% else %}
+									<li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+									{% endif %}
+								  {% endfor %}
+								{% if products.has_next %}
+									<li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Next</a></li>
+								{% else %}
+									<li class="page-item disabled"><span class="page-link">Next</span></li>
+								  {% endif %}
+
+								</ul>
+								{% endif %}
+							</div>
+						</div>
+
 				</div>
 			</div>
 		</div>
