@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>add card</h1>
+<ul>
+    {% for c in cat %}
+    <li>{{c.name}}</li>
+    {% if c.subcategory.all %}
+    <ul>
+        {% for i in c.subcategory.all %}
+        <li>--{{i}}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+<!--    <li>{{c}</li>-->
+    {% endfor %}
+</ul>
+
+<!--<ul>-->
+<!--    {% for c in rel %}-->
+<!--    <li>{{c.name}}</li>-->
+<!--    {% endfor %}-->
+<!--</ul>-->
+</body>
+</html>

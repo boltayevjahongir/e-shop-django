@@ -17,12 +17,12 @@
 						<h2>Category</h2>
 						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
 						{% for itemCt in ct%}
-							{% if itemCt.sub %}
+							{% if itemCt.subcategory.all %}
 
 									<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
-										<a data-toggle="collapse" data-parent="#accordian" href="#{{itemCt.name}}">
+										<a class="category" data-toggle="collapse" data-category="{{itemCt.id}}" data-parent="#accordian" href="#{{itemCt.name}}">
 											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
 											{{itemCt.name}}
 										</a>
@@ -32,11 +32,8 @@
 									<div class="panel-body">
 										<ul>
 
-											{% for itemSub in subC%}
-
-												{% if itemSub.subID != itemCt.name %}
-												<li><a href="">{{itemSub.name}} ss</a></li>
-												{% endif %}
+											 {% for i in itemCt.subcategory.all %}
+											<li><a class="category" data-category="{{itemCt.id}}" data-subcategiry="{{i.id}}"  href="">{{i.name}}</a></li>
 											{% endfor %}
 										</ul>
 									</div>
@@ -49,7 +46,9 @@
 						{% else %}
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">{{ itemCt.name }}</a></h4>
+									<h4 class="panel-title">
+										<a class="category" data-category="{{itemCt.id}}" href="#">{{ itemCt.name }}</a>
+									</h4>
 								</div>
 							</div>
 						{% endif %}
@@ -98,13 +97,13 @@
 
 										{% endif%}
 										<p>{{itemP.title}}</p>
-										<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+										<a href="" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 									</div>
 									<div class="product-overlay">
 										<div class="overlay-content">
 											<h2>${{itemP.narx}}</h2>
 											<p>{{itemP.title}}</p>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+											<a href="" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 										</div>
 									</div>
 								</div>
@@ -149,5 +148,55 @@
 			</div>
 		</div>
 	</section>
+<script>
+let btn = document.querySelectorAll('.category')
 
+for(let i=0; i< btn.length; i++){
+
+            btn[i].addEventListener('click', function(e) {
+				 e.preventDefault();
+				 console.log(btn[i])
+				let catId = this.dataset.category
+				let subCatId = this.dataset.subcategiry
+				if (!subCatId){
+					subCatId = 0
+				}
+
+				function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+                }
+            }
+        }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+fetch("{% url 'shop' %}", {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers:{
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+          'X-CSRFToken': csrftoken,
+  },
+      body: JSON.stringify({'subCatId':subCatId}) //JavaScript object of data to POST
+  })
+  .then(response => {
+        return response.json() //Convert response to JSON
+  })
+
+
+
+				console.log(catId,  subcat, csrftoken)
+
+})}
+
+</script>
 {% endblock content  %}

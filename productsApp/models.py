@@ -5,13 +5,12 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(max_length=255, null=True)
-    sub = models.BooleanField(default=0)
 
     def __str__(self):
         return self.name
 
 class SubCategory(models.Model):
-    subID = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    subID = models.ForeignKey(Category, related_name='subcategory',  on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=255, null=True)
 
     def __str__(self):
