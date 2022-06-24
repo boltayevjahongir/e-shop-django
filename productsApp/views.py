@@ -18,11 +18,11 @@ def shop(request):
     ct = Category.objects.all()
     brend = Brend.objects.all()
     productList = Products.objects.all()
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        # catId = json.load(request)['catId']
-        subCatId = json.load(request)['subCatId']
 
-        print(subCatId)
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        catId = json.load(request)['catId']
+        productList = Products.objects.filter(category=catId[0])
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(productList, 6)
@@ -57,6 +57,13 @@ def signup(request):
         'form': form
     })
 
+
+
+def related(request):
+
+    category = Category.objects.all()
+
+    return render(request, 'related.html', context={'categorys':category})
 
 def custom_page_not_found_view(request, exception):
     return render(request, "404.html", {})

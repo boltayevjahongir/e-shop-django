@@ -32,7 +32,7 @@ class Products(models.Model):
     chegirma = models.IntegerField(default=0, null=True)
     Condition = models.BooleanField(default=True, null=True)
     Count = models.IntegerField(null=True)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
-    brand = models.ForeignKey(Brend, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(Category, related_name='product_category', on_delete=models.SET_NULL, null=True)
+    brand = models.ForeignKey(Brend, related_name='brand', on_delete=models.SET_NULL, null=True)
     def __str__(self):
         return self.title

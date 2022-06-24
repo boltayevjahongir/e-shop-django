@@ -24,14 +24,13 @@
 									<h4 class="panel-title">
 										<a class="category" data-toggle="collapse" data-category="{{itemCt.id}}" data-parent="#accordian" href="#{{itemCt.name}}">
 											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
-											{{itemCt.name}}
+											{{itemCt.name}} ({{itemCt.product_category.all | length}})
 										</a>
 									</h4>
 								</div>
 								<div id="{{itemCt.name}}" class="panel-collapse collapse">
 									<div class="panel-body">
 										<ul>
-
 											 {% for i in itemCt.subcategory.all %}
 											<li><a class="category" data-category="{{itemCt.id}}" data-subcategiry="{{i.id}}"  href="">{{i.name}}</a></li>
 											{% endfor %}
@@ -47,7 +46,7 @@
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
-										<a class="category" data-category="{{itemCt.id}}" href="#">{{ itemCt.name }}</a>
+										<a class="category" data-category="{{itemCt.id}}" href="#">{{ itemCt.name }} ({{itemCt.product_category.count}})</a>
 									</h4>
 								</div>
 							</div>
@@ -60,7 +59,7 @@
 							<div class="brands-name">
 								<ul class="nav nav-pills nav-stacked">
 									{% for itemBrend in brend %}
-									<li><a href=""> <span class="pull-right">(50)</span>{{itemBrend.name}}</a></li>
+									<li><a href=""> <span class="pull-right">({{itemBrend.brand.count}})</span>{{itemBrend.name}}</a></li>
 								{% endfor %}
 								</ul>
 							</div>
@@ -186,7 +185,7 @@ fetch("{% url 'shop' %}", {
           'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
           'X-CSRFToken': csrftoken,
   },
-      body: JSON.stringify({'subCatId':subCatId}) //JavaScript object of data to POST
+      body: JSON.stringify({catId:[catId, subCatId],}) //JavaScript object of data to POST
   })
   .then(response => {
         return response.json() //Convert response to JSON
@@ -194,7 +193,7 @@ fetch("{% url 'shop' %}", {
 
 
 
-				console.log(catId,  subcat, csrftoken)
+				// console.log(catId,  subcat, csrftoken)
 
 })}
 
